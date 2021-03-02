@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>How Much Should We Trust Staggered Difference-In-Differences Estimates?</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Andrew C. Baker, David. F. Larcker, and Charles C.Y. Wang" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# How Much Should We Trust Staggered Difference-In-Differences Estimates?
+### Andrew C. Baker, David. F. Larcker, and Charles C.Y. Wang
+### Stanford GSB and Harvard HBS
+### London Law &amp; Finance Seminar Series <br/> March 2, 2021
+
+---
+
+
+&lt;style type="text/css"&gt;
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}
+&lt;/style&gt;
+
+
+
+# .center.pull[Outline of Talk]
+
+`\(\hspace{2cm}\)`
+
+1. Overview of Staggered Difference-in-Differences (DiD)
+
+2. Problems With Fixed Effects Estimation
+
+3. Simulation Analyses
+
+4. Discussion of Alternative Estimation Approaches
+
+5. Replication Example
+
+---
+
+# .center.pull[Use of DiD in Finance and Accounting]
+
+&lt;img src="table1.png" width="782" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .center.pull[What Is DiD?]
+
+`\(\hspace{2cm}\)`
+
+- Arguably the most basic applied microeconomic causal model.
+
+--
+
+- Simple 2x2 Example:
+
+    - Assume two units and two time periods.
+    
+--
+    
+    - `\(Y_{i, t}^1\)` = Value of Y for unit `\(i\)` in period `\(t\)` with treatment.
+    
+--
+    
+    - `\(Y_{i, t}^0\)` = Value of Y for unit `\(i\)` in period `\(t\)` without treatment.
+    
+--
+
+    - With "parallel trends" unbiased estimate of treatment effect is: `$$\delta \equiv \mathbb{E}[(Y_{T,1}^1-Y_{T,0}^1)-(Y_{T,1}^0-Y_{T,0}^0)] = \\ \mathbb{E}[(Y_{T,1}^1-Y_{T,0}^1)-(Y_{C,1}^0-Y_{C,0}^0)]$$`
+    
+    
+---
+
+# .center.pull[Visual Example]
+
+&lt;img src="plot1.png" width="3333" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .center.pull[Regression DiD]
+
+`\(\hspace{2cm}\)`
+
+- We don't actually do these manual calculations in practice.
+
+--
+
+- Can get same estimate for `\(\delta\)` from regression:
+
+`$$y_{it} = \alpha + \beta_1 TREAT_i + \beta_2 POST_t + \beta_3 (TREAT_i \cdot POST_t) + \epsilon_{it}$$`
+--
+
+- Most settings have *multiple* units, and *multiple* periods. 
+
+--
+
+- Want to control for differences across units and time periods unrelated to treatment.
+
+--
+
+- Modified regression - the two-way fixed effects (TWFE) DiD estimator:
+
+`$$y_{it} = \alpha_i + \lambda_t + \delta^{DD} D_{it} + \epsilon_{it}$$`
+
+---
+
+# .center.pull[Bias with TWFE - Goodman-Bacon (2020)]
+
+Main Decomposition:
+
+`$$\underset{N \rightarrow \infty}{\text{plim }} \widehat{\delta^{DD}} = \color{green}{VWATT} + \color{blue}{VWCT} -\color{red}{\Delta ATT}$$`
+
+--
+`\(\hspace{2cm}\)`
+
+- `\(\color{green}{VWATT}\)` = variance-weighted average treatment effect on the treated.
+
+--
+
+`\(\hspace{2cm}\)`
+- `\(\color{blue}{VWCT}\)` = variance-weighted common trend. 
+
+--
+
+`\(\hspace{2cm}\)`
+- `\(\color{red}{\Delta ATT}\)` = weighted sum of the *change* in treatment effects within each unit's post-period with respect to another unit's treatment timing.
+
+---
+
+# .center.pull[Simulation]
+
+`\(\hspace{2cm}\)`
+
+- We simulate datasets similar to those used in corporate finance and accounting applications.
+`\(\hspace{2cm}\)`
+
+--
+
+- Outcome variable `\(y_{it}\)` in balanced panel with `\(T = 36\)` years from 1980 to 2015, and 1,000 firms `\(i\)`.
+`\(\hspace{2cm}\)`
+
+--
+
+- Time-invariant unit effects and time-varying year effects `\(\sim N(0, 0.5^2)\)`.
+`\(\hspace{2cm}\)`
+
+--
+
+- Firms are headquartered in one of 50 randomly drawn states. These states determine the treatment groups in the simulations.
+
+---
+
+# .center.pull[Where TWFE DiD Works]
+
+&lt;img src="fig1a.png" width="3333" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .center.pull[Where TWFE DiD Works]
+
+&lt;img src="fig2a.png" width="3333" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .center.pull[Where TWFE DiD Does Not Work]
+
+&lt;img src="fig1b.png" width="3333" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .center.pull[Where TWFE DiD Does Not Work]
+
+&lt;img src="fig2b.png" width="3333" style="display: block; margin: auto;" /&gt;
+---
+# .center.pull[Decomposition Results]
+
+&lt;img src="fig3.png" width="3333" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .center.pull[Problematic Comparisons]
+
+
+&lt;img src="fig3d.png" width="3333" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .center.pull[Alternative DiD Methods]
+
+&lt;img src="fig4.png" width="3333" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .center.pull[Big Bad Banks]
+
+- Beck, Levine, Levkov (2010 JF).
+
+`\(\hspace{2cm}\)`
+--
+
+- Staggered bank branch deregulation across states in 1970s - 1990s.
+
+`\(\hspace{2cm}\)`
+--
+
+- Authors exploit the cross-state and intertemporal variation in deregulation to analyze impact on income inequality.
+
+`\(\hspace{2cm}\)`
+--
+
+- Uses CPS data from 1977 - 2007.
+
+---
+
+# .center.pull[Baseline Model]
+
+`$$\text{Log(Gini)}_{it} = \alpha_i + \lambda_t + \delta^{DD} D_{it} + \epsilon_{it}$$`
+`\(\hspace{2cm}\)`
+
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+&lt;caption&gt;The Impact of Deregulation on Income Inequality&lt;/caption&gt;
+ &lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="empty-cells: hide;border-bottom:hidden;" colspan="1"&gt;&lt;/th&gt;
+&lt;th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"&gt;&lt;div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; "&gt;No &lt;br&gt; Controls&lt;/div&gt;&lt;/th&gt;
+&lt;th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"&gt;&lt;div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; "&gt;With &lt;br&gt; Controls&lt;/div&gt;&lt;/th&gt;
+&lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Log Gini &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Log Gini &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Bank deregulation &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; -0.022*** &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; -0.018*** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; (0.008) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; (0.006) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adjusted R-Squared &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.51 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.54 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Observations &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1519 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1519 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# .center.pull[Goodman-Bacon Decomposition]
+
+
+&lt;img src="fig7.png" width="635" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .center.pull[TWFE Event Study Results]
+
+&lt;img src="Slides_files/figure-html/unnamed-chunk-14-1.png" width="720" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .center.pull[Callaway and Sant'Anna Estimator]
+&lt;img src="fig10.png" width="3333" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .center.pull[Stacked Regression Estimator]
+&lt;img src="fig9.png" width="3333" style="display: block; margin: auto;" /&gt;
+
+---
+
+# .center.pull[Conclusions]
+
+`\(\hspace{2cm}\)`
+
+- A ton of papers use staggered DiD estimatio across domain areas in finance, accounting, and the law.
+
+--
+
+- These designs are subjec to potentially severe bias.
+
+--
+
+- The field is advancing in figuring out remedies to this issue.
+
+--
+
+- __But__ there are things we can and should be doing now
+
+--
+
+    - Plot treatment timing.
+    
+    - Use event study estimators as base DiD analysis.
+    
+    - With and without covariates.
+    
+    - Be very cautious with &gt; 2 levels of FE.
+    
+    - Decompose `\(\delta^{DD}\)` if possible
+    
+    - Use Pedro's estimator.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"ratio": "16:9",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"extra_dependencies": "xcolor"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  /* Replace <script> tags in slides area to make them executable
+   *
+   * Runs after post-processing of markdown source into slides and replaces only
+   * <script>s on the last slide of continued slides using the .has-continuation
+   * class added by xaringan. Finally, any <script>s in the slides area that
+   * aren't executed are commented out.
+   */
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container:not(.has-continuation) script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+  var scriptsNotExecuted = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container.has-continuation script'
+  );
+  if (!scriptsNotExecuted.length) return;
+  for (var i = 0; i < scriptsNotExecuted.length; i++) {
+    var comment = document.createComment(scriptsNotExecuted[i].outerHTML)
+    scriptsNotExecuted[i].parentElement.replaceChild(comment, scriptsNotExecuted[i])
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
